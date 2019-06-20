@@ -79,6 +79,9 @@ func AssignRole(c *gin.Context) {
     c.AbortWithStatus(404)
     fmt.Println(err)
  }
+
+ db = db.Model(&person).Preload("Roles")
+
  c.BindJSON(&role)
 
  //get role by id
@@ -87,10 +90,8 @@ func AssignRole(c *gin.Context) {
     c.AbortWithStatus(404)
     fmt.Println(err)
  }
- var roles []Role
-
- roles = append(roles, role)
- person.Roles = roles
+ 
+ person.Roles = append(person.Roles, role)
 
  db.Save(&person)
  c.JSON(200, person)
