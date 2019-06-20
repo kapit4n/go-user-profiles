@@ -122,6 +122,7 @@ func CreatePerson(c *gin.Context) {
 func GetPerson(c *gin.Context) {
  id := c.Params.ByName("id")
  var person Person
+ db = db.Model(&person).Preload("Roles")
  if err := db.Where("id = ?", id).First(&person).Error; err != nil {
     c.AbortWithStatus(404)
     fmt.Println(err)
