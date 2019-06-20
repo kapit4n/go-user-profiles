@@ -40,7 +40,8 @@ func main() {
  r.GET("/people/", GetPeople)
  r.GET("/people/:id", GetPerson)
  r.POST("/people", CreatePerson)
- r.POST("/people/:id/role", AssignRole)
+ r.POST("/people/:id/arole", AssignRole)
+ r.POST("/people/:id/urole", UnAssignRole)
  r.PUT("/people/:id", UpdatePerson)
  r.DELETE("/people/:id", DeletePerson)
  r.Run(":8080")
@@ -94,6 +95,33 @@ func AssignRole(c *gin.Context) {
  db.Save(&person)
  c.JSON(200, person)
 }
+
+
+// UnAssign role to person
+func UnAssignRole(c *gin.Context) {
+ var role Role
+ var person Person
+ id := c.Params.ByName("id")
+ // get person by id
+ if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+    c.AbortWithStatus(404)
+    fmt.Println(err)
+ }
+ c.BindJSON(&role)
+
+ //get role by id
+ roleId := role.ID
+ if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
+    c.AbortWithStatus(404)
+    fmt.Println(err)
+ }
+
+ db.Model(&person).Association("Roles").Delete(&role)
+
+ c.JSON(200, person)
+}
+
+
 
 // create a person
 func CreatePerson(c *gin.Context) {

@@ -9,7 +9,7 @@
 * go get "github.com/jinzhu/gorm/dialects/sqlite"
 
 ## RUN
-go run example2.go
+go run example.go
 
 ## RESOURCES
 ```
