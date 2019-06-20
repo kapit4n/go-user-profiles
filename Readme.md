@@ -1,5 +1,13 @@
 # Go example with GORM and GIN
 
+## PREREQUISITES
+* Have a db created with peco name
+* have a user with permission to create tables and alter them
+* go get "github.com/gin-gonic/gin"
+* go get "github.com/go-sql-driver/mysql" 
+* go get "github.com/jinzhu/gorm"
+* go get "github.com/jinzhu/gorm/dialects/sqlite"
+
 ## RUN
 go run example2.go
 
