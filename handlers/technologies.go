@@ -1,5 +1,4 @@
-package controllers
-
+package handlers
 import (
 	models "example/models"
 

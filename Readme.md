@@ -25,3 +25,7 @@ go run example.go
 [GIN-debug] PUT    /people/:id               --> main.UpdatePerson (3 handlers)
 [GIN-debug] DELETE /people/:id               --> main.DeletePerson (3 handlers)
 ```
+
+## Structure
+* /models
+* /handlers

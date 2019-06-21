@@ -3,7 +3,7 @@ package main
 // only need mysql OR sqlite
 // both are included here for reference
 import (
-	controllers "example/controllers"
+	handlers "example/handlers"
 	models "example/models"
 	"fmt"
 
@@ -30,16 +30,16 @@ func main() {
 	db.AutoMigrate(&models.Experience{})
 	db.AutoMigrate(&models.Technology{})
 	r := gin.Default()
-	r.GET("/people/", controllers.GetPeople)
-	r.GET("/people/:id", controllers.GetPerson)
-	r.POST("/people", controllers.CreatePerson)
-	r.POST("/technology", controllers.CreateTechnology)
-	r.POST("/people/:id/experience", controllers.CreateExperience)
-	r.POST("/experience/:id/atech", controllers.AssignTech)
-	r.POST("/people/:id/arole", controllers.AssignRole)
-	r.POST("/people/:id/aexperience", controllers.AssignExperience)
-	r.POST("/people/:id/urole", controllers.UnAssignRole)
-	r.PUT("/people/:id", controllers.UpdatePerson)
-	r.DELETE("/people/:id", controllers.DeletePerson)
+	r.GET("/people/", handlers.GetPeople)
+	r.GET("/people/:id", handlers.GetPerson)
+	r.POST("/people", handlers.CreatePerson)
+	r.POST("/technology", handlers.CreateTechnology)
+	r.POST("/people/:id/experience", handlers.CreateExperience)
+	r.POST("/experience/:id/atech", handlers.AssignTech)
+	r.POST("/people/:id/arole", handlers.AssignRole)
+	r.POST("/people/:id/aexperience", handlers.AssignExperience)
+	r.POST("/people/:id/urole", handlers.UnAssignRole)
+	r.PUT("/people/:id", handlers.UpdatePerson)
+	r.DELETE("/people/:id", handlers.DeletePerson)
 	r.Run(":8080")
 }

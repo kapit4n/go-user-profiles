@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	models "example/models"
@@ -152,7 +152,7 @@ func CreatePerson(c *gin.Context) {
 // get a person by id
 func GetPerson(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var person models.Person
+	person := new(models.Person)
 	db = db.Model(&person).Preload("Roles").Preload("Experiences")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
