@@ -22,7 +22,7 @@ type Person struct {
 	City        string       `json:"city"`
 	Roles       []Role       `gorm:"many2many:person_roles;"`
 	RoleId      uint         `json:"roleId"`
-	Experiences []Experience `gorm:"many2many:person_exp;"`
+	Experiences []Experience `gorm:"many2many:person_exp;PRELOAD:false;"`
 }
 
 type Experience struct {
@@ -60,8 +60,11 @@ func main() {
 	r.GET("/people/", GetPeople)
 	r.GET("/people/:id", GetPerson)
 	r.POST("/people", CreatePerson)
+	r.POST("/technology", CreateTechnology)
 	r.POST("/people/:id/experience", CreateExperience)
+	r.POST("/experience/:id/atech", AssignTech)
 	r.POST("/people/:id/arole", AssignRole)
+	r.POST("/people/:id/aexperience", AssignExperience)
 	r.POST("/people/:id/urole", UnAssignRole)
 	r.PUT("/people/:id", UpdatePerson)
 	r.DELETE("/people/:id", DeletePerson)
@@ -134,6 +137,62 @@ func AssignRole(c *gin.Context) {
 	c.JSON(200, person)
 }
 
+// Assign role to person
+func AssignExperience(c *gin.Context) {
+	var experience Experience
+	var person Person
+	id := c.Params.ByName("id")
+	// get person by id
+	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	db = db.Model(&person).Preload("Experiences")
+
+	c.BindJSON(&experience)
+
+	//get experience by id
+	experienceId := experience.ID
+	if err := db.Where("id = ?", experienceId).First(&experience).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	person.Experiences = append(person.Experiences, experience)
+
+	db.Save(&person)
+	c.JSON(200, person)
+}
+
+// Assign role to person
+func AssignTech(c *gin.Context) {
+	var experience Experience
+	id := c.Params.ByName("id")
+	// get experience by id
+	if err := db.Where("id = ?", id).First(&experience).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	db = db.Model(&experience).Preload("Technologies")
+	var technology Technology
+
+	c.BindJSON(&technology)
+
+	//get technology by id
+	techId := technology.ID
+	if err := db.Where("id = ?", techId).First(&technology).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	experience.Technologies = append(experience.Technologies, technology)
+
+	db.Save(&experience)
+	c.JSON(200, experience)
+}
+
 // UnAssign role to person
 func UnAssignRole(c *gin.Context) {
 	var role Role
@@ -181,11 +240,19 @@ func CreatePerson(c *gin.Context) {
 	c.JSON(200, person)
 }
 
+// create a technology
+func CreateTechnology(c *gin.Context) {
+	var m Technology
+	c.BindJSON(&m)
+	db.Create(&m)
+	c.JSON(200, m)
+}
+
 // get a person by id
 func GetPerson(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var person Person
-	db = db.Model(&person).Preload("Roles")
+	db = db.Model(&person).Preload("Roles").Preload("Experiences")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
