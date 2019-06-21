@@ -8,11 +8,9 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-var db *gorm.DB
-var err error
-
 // Assign role to person
 func AssignTech(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var experience models.Experience
 	id := c.Params.ByName("id")
 	// get experience by id

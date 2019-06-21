@@ -6,10 +6,15 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
+
+var db *gorm.DB
+var err error
 
 // delete a person
 func DeletePerson(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	id := c.Params.ByName("id")
 	var person models.Person
 	d := db.Where("id = ?", id).Delete(&person)
@@ -19,6 +24,7 @@ func DeletePerson(c *gin.Context) {
 
 // update a person
 func UpdatePerson(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var person models.Person
 	id := c.Params.ByName("id")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -32,6 +38,7 @@ func UpdatePerson(c *gin.Context) {
 
 // Assign role to person
 func CreateExperience(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var experience models.Experience
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -48,6 +55,7 @@ func CreateExperience(c *gin.Context) {
 
 // Assign role to person
 func AssignRole(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -76,6 +84,7 @@ func AssignRole(c *gin.Context) {
 
 // Assign role to person
 func AssignExperience(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var experience models.Experience
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -104,6 +113,7 @@ func AssignExperience(c *gin.Context) {
 
 // UnAssign role to person
 func UnAssignRole(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -128,6 +138,7 @@ func UnAssignRole(c *gin.Context) {
 
 // create a person
 func CreatePerson(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var person models.Person
 	c.BindJSON(&person)
 
@@ -151,9 +162,11 @@ func CreatePerson(c *gin.Context) {
 
 // get a person by id
 func GetPerson(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+
 	id := c.Params.ByName("id")
 	person := new(models.Person)
-	db = db.Model(&person).Preload("Roles").Preload("Experiences")
+	db = db.Model(person).Preload("Roles").Preload("Experiences")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
@@ -164,6 +177,7 @@ func GetPerson(c *gin.Context) {
 
 // get all people
 func GetPeople(c *gin.Context) {
+	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
 	var people []models.Person
 	roles := []models.Role{}
 
