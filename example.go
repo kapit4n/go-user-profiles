@@ -3,6 +3,7 @@ package main
 // only need mysql OR sqlite
 // both are included here for reference
 import (
+	models "example/models"
 	"fmt"
 	"log"
 
@@ -15,34 +16,6 @@ import (
 var db *gorm.DB
 var err error
 
-type Person struct {
-	ID          uint         `json:"id"`
-	FirstName   string       `json:"firstname"`
-	LastName    string       `json:"lastname"`
-	City        string       `json:"city"`
-	Roles       []Role       `gorm:"many2many:person_roles;"`
-	RoleId      uint         `json:"roleId"`
-	Experiences []Experience `gorm:"many2many:person_exp;PRELOAD:false;"`
-}
-
-type Experience struct {
-	ID           uint   `json:"id"`
-	Title        string `json:"title"`
-	Person       Person
-	PersonID     uint         `json:"personId"`
-	Technologies []Technology `gorm:"many2many:experience_tech"`
-}
-
-type Technology struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-}
-
-type Role struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-}
-
 func main() {
 	// NOTE: See we’re using = to assign the global var
 	// instead of := which would assign it only in this function
@@ -52,10 +25,10 @@ func main() {
 		fmt.Println(err)
 	}
 	defer db.Close()
-	db.AutoMigrate(&Person{})
-	db.AutoMigrate(&Role{})
-	db.AutoMigrate(&Experience{})
-	db.AutoMigrate(&Technology{})
+	db.AutoMigrate(&models.Person{})
+	db.AutoMigrate(&models.Role{})
+	db.AutoMigrate(&models.Experience{})
+	db.AutoMigrate(&models.Technology{})
 	r := gin.Default()
 	r.GET("/people/", GetPeople)
 	r.GET("/people/:id", GetPerson)
@@ -74,7 +47,7 @@ func main() {
 // delete a person
 func DeletePerson(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var person Person
+	var person models.Person
 	d := db.Where("id = ?", id).Delete(&person)
 	fmt.Println(d)
 	c.JSON(200, gin.H{"id #" + id: "deleted"})
@@ -82,7 +55,7 @@ func DeletePerson(c *gin.Context) {
 
 // update a person
 func UpdatePerson(c *gin.Context) {
-	var person Person
+	var person models.Person
 	id := c.Params.ByName("id")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
@@ -95,8 +68,8 @@ func UpdatePerson(c *gin.Context) {
 
 // Assign role to person
 func CreateExperience(c *gin.Context) {
-	var experience Experience
-	var person Person
+	var experience models.Experience
+	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -111,8 +84,8 @@ func CreateExperience(c *gin.Context) {
 
 // Assign role to person
 func AssignRole(c *gin.Context) {
-	var role Role
-	var person Person
+	var role models.Role
+	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -139,8 +112,8 @@ func AssignRole(c *gin.Context) {
 
 // Assign role to person
 func AssignExperience(c *gin.Context) {
-	var experience Experience
-	var person Person
+	var experience models.Experience
+	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -167,7 +140,7 @@ func AssignExperience(c *gin.Context) {
 
 // Assign role to person
 func AssignTech(c *gin.Context) {
-	var experience Experience
+	var experience models.Experience
 	id := c.Params.ByName("id")
 	// get experience by id
 	if err := db.Where("id = ?", id).First(&experience).Error; err != nil {
@@ -176,7 +149,7 @@ func AssignTech(c *gin.Context) {
 	}
 
 	db = db.Model(&experience).Preload("Technologies")
-	var technology Technology
+	var technology models.Technology
 
 	c.BindJSON(&technology)
 
@@ -195,8 +168,8 @@ func AssignTech(c *gin.Context) {
 
 // UnAssign role to person
 func UnAssignRole(c *gin.Context) {
-	var role Role
-	var person Person
+	var role models.Role
+	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -219,18 +192,18 @@ func UnAssignRole(c *gin.Context) {
 
 // create a person
 func CreatePerson(c *gin.Context) {
-	var person Person
+	var person models.Person
 	c.BindJSON(&person)
 
 	log.Println(person)
 
-	var role Role
+	var role models.Role
 	roleId := person.RoleId
 	if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
-	var roles []Role
+	var roles []models.Role
 
 	roles = append(roles, role)
 
@@ -242,7 +215,7 @@ func CreatePerson(c *gin.Context) {
 
 // create a technology
 func CreateTechnology(c *gin.Context) {
-	var m Technology
+	var m models.Technology
 	c.BindJSON(&m)
 	db.Create(&m)
 	c.JSON(200, m)
@@ -251,7 +224,7 @@ func CreateTechnology(c *gin.Context) {
 // get a person by id
 func GetPerson(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var person Person
+	var person models.Person
 	db = db.Model(&person).Preload("Roles").Preload("Experiences")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
@@ -263,8 +236,8 @@ func GetPerson(c *gin.Context) {
 
 // get all people
 func GetPeople(c *gin.Context) {
-	var people []Person
-	roles := []Role{}
+	var people []models.Person
+	roles := []models.Role{}
 
 	db = db.Model(&people).Preload("Roles")
 	db = db.Find(&people)
