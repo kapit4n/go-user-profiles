@@ -16,7 +16,12 @@ go run example.go
 [GIN-debug] GET    /people/                  --> main.GetPeople (3 handlers)
 [GIN-debug] GET    /people/:id               --> main.GetPerson (3 handlers)
 [GIN-debug] POST   /people                   --> main.CreatePerson (3 handlers)
-[GIN-debug] POST   /people/:id/role          --> main.AssignRole (3 handlers)
+[GIN-debug] POST   /technology               --> main.CreateTechnology (3 handlers)
+[GIN-debug] POST   /people/:id/experience    --> main.CreateExperience (3 handlers)
+[GIN-debug] POST   /experience/:id/atech     --> main.AssignTech (3 handlers)
+[GIN-debug] POST   /people/:id/arole         --> main.AssignRole (3 handlers)
+[GIN-debug] POST   /people/:id/aexperience   --> main.AssignExperience (3 handlers)
+[GIN-debug] POST   /people/:id/urole         --> main.UnAssignRole (3 handlers)
 [GIN-debug] PUT    /people/:id               --> main.UpdatePerson (3 handlers)
-[GIN-debug] DELETE /people/:id               --> main.DeletePerson (3 handlers
+[GIN-debug] DELETE /people/:id               --> main.DeletePerson (3 handlers)
 ```
