@@ -29,3 +29,8 @@ go run example.go
 ## Structure
 * /models
 * /handlers
+## TODO
+* CRUD persons
+* CRUD technologies
+* CRUD experiences
+* CRUD roles
