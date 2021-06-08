@@ -35,3 +35,9 @@ go run example.go
 * CRUD technologies
 * CRUD experiences
 * CRUD roles
+
+## TOOLS
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"firstname":"Luis","lastname":"Arce", "city": "Cochabamba"}' \
+  http://localhost:8080/people
