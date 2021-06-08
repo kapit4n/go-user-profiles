@@ -10,7 +10,8 @@ import (
 
 // Assign role to person
 func AssignTech(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	// db, _ = gorm.Open("mysql", "root:root@tcp(localhost:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var experience models.Experience
 	id := c.Params.ByName("id")
 	// get experience by id

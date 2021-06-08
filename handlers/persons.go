@@ -14,7 +14,7 @@ var err error
 
 // delete a person
 func DeletePerson(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	id := c.Params.ByName("id")
 	var person models.Person
 	d := db.Where("id = ?", id).Delete(&person)
@@ -24,7 +24,7 @@ func DeletePerson(c *gin.Context) {
 
 // update a person
 func UpdatePerson(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var person models.Person
 	id := c.Params.ByName("id")
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -38,7 +38,7 @@ func UpdatePerson(c *gin.Context) {
 
 // Assign role to person
 func CreateExperience(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var experience models.Experience
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -55,7 +55,7 @@ func CreateExperience(c *gin.Context) {
 
 // Assign role to person
 func AssignRole(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -84,7 +84,7 @@ func AssignRole(c *gin.Context) {
 
 // Assign role to person
 func AssignExperience(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var experience models.Experience
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -113,7 +113,7 @@ func AssignExperience(c *gin.Context) {
 
 // UnAssign role to person
 func UnAssignRole(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
@@ -138,7 +138,7 @@ func UnAssignRole(c *gin.Context) {
 
 // create a person
 func CreatePerson(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var person models.Person
 	c.BindJSON(&person)
 
@@ -162,7 +162,7 @@ func CreatePerson(c *gin.Context) {
 
 // get a person by id
 func GetPerson(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 
 	id := c.Params.ByName("id")
 	person := new(models.Person)
@@ -177,11 +177,12 @@ func GetPerson(c *gin.Context) {
 
 // get all people
 func GetPeople(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+
 	var people []models.Person
 	roles := []models.Role{}
 
-	db = db.Model(&people).Preload("Roles")
+	//db = db.Model(&people).Preload("Roles")
 	db = db.Find(&people)
 
 	if err := db.Find(&people).Error; err != nil {

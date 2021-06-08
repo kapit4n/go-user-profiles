@@ -9,7 +9,7 @@ import (
 
 // create a technology
 func CreateTechnology(c *gin.Context) {
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var m models.Technology
 	c.BindJSON(&m)
 	db.Create(&m)

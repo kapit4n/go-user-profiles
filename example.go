@@ -19,8 +19,8 @@ var err error
 func main() {
 	// NOTE: See we’re using = to assign the global var
 	// instead of := which would assign it only in this function
-	//db, err = gorm.Open("sqlite3", "./gorm.db")
-	db, _ = gorm.Open("mysql", "root:ROOT@tcp(127.0.0.1:3306)/peco?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	//db, _ = gorm.Open("mysql", "root:root@tcp(localhost:3306)/peco")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -30,7 +30,7 @@ func main() {
 	db.AutoMigrate(&models.Experience{})
 	db.AutoMigrate(&models.Technology{})
 	r := gin.Default()
-	r.GET("/people/", handlers.GetPeople)
+	r.GET("/people", handlers.GetPeople)
 	r.GET("/people/:id", handlers.GetPerson)
 	r.POST("/people", handlers.CreatePerson)
 	r.POST("/technology", handlers.CreateTechnology)
