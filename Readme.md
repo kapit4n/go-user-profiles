@@ -41,3 +41,8 @@ go run example.go
   --request POST \
   --data '{"firstname":"Luis","lastname":"Arce", "city": "Cochabamba"}' \
   http://localhost:8080/people
+
+## before add swagger
+- go get -u github.com/swaggo/swag/cmd/swag
+- export PATH=$(go env GOPATH)/bin:$PATH
+- https://github.com/swaggo/gin-swagger

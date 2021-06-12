@@ -1,0 +1,23 @@
+info:
+  contact: {}
+paths:
+  /person/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Person by ID
+      parameters:
+      - description: Some ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Delete
+swagger: "2.0"
