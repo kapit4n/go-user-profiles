@@ -3,6 +3,7 @@ package controller
 import (
 	models "example/models"
 	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -43,14 +44,47 @@ func CreateExperience(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var experience models.Experience
 	var person models.Person
-	id := c.Params.ByName("id")
+	c.BindJSON(&experience)
+
 	// get person by id
+	id := c.Params.ByName("id")
+	if len(id) == 0 {
+		id = strconv.FormatUint(uint64(experience.PersonID), 10)
+	}
+
 	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
-	c.BindJSON(&experience)
 	experience.Person = person
 	db.Create(&experience)
 	c.JSON(200, experience)
+}
+
+func UpdateExperience(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	var experience models.Experience
+	id := c.Params.ByName("id")
+	if err := db.Where("id = ?", id).First(&experience).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&experience)
+	db.Save(&experience)
+	c.JSON(200, experience)
+}
+
+func GetExperience(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+
+	var list []models.Experience
+
+	db = db.Find(&list)
+
+	if err := db.Find(&list).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.JSON(200, list)
+	}
 }

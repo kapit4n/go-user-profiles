@@ -57,6 +57,10 @@ func main() {
 	r.POST("/roles", controller.CreateRole)
 	r.PUT("/roles/:id", controller.UpdateRole)
 
+	r.GET("/experiences", controller.GetExperience)
+	r.POST("/experiences", controller.CreateExperience)
+	r.PUT("/experiences/:id", controller.UpdateExperience)
+
 	r.POST("/experience/:id/atech", controller.AssignTech)
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
