@@ -156,9 +156,7 @@ func GetPerson(c *gin.Context) {
 func GetPeople(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var people []models.Person
-	db = db.Model(&people).Preload("Roles")
-	db = db.Model(&people).Preload("Experiences")
-	db = db.Find(&people)
+	db = db.Find(&people).Preload("Roles").Preload("Experiences")
 	if err := db.Find(&people).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)

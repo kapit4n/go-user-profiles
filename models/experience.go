@@ -5,10 +5,11 @@ package models
 import (
 	//_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/gorm"
 )
 
 type Experience struct {
-	ID           uint   `json:"id"`
+	gorm.Model
 	Title        string `json:"title"`
 	Person       Person
 	PersonID     uint         `json:"personId"`

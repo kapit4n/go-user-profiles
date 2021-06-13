@@ -5,9 +5,10 @@ package models
 import (
 	//_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/gorm"
 )
 
 type Technology struct {
-	ID   uint   `json:"id"`
+	gorm.Model
 	Name string `json:"name"`
 }

@@ -5,14 +5,15 @@ package models
 import (
 	//_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/gorm"
 )
 
 type Person struct {
-	ID          uint         `json:"id"`
+	gorm.Model
 	FirstName   string       `json:"firstname"`
 	LastName    string       `json:"lastname"`
 	City        string       `json:"city"`
 	Roles       []Role       `gorm:"many2many:person_roles;"`
 	RoleId      uint         `json:"roleId"`
-	Experiences []Experience `gorm:"many2many:person_exp;PRELOAD:false;"`
+	Experiences []Experience `gorm:"many2many:person_exp;PRELOAD:true;"`
 }

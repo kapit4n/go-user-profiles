@@ -4,6 +4,8 @@ package main
 // both are included here for reference
 import (
 	"example/controller"
+	"example/models"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -20,9 +22,7 @@ var db *gorm.DB
 var err error
 
 func main() {
-	// NOTE: See we’re using = to assign the global var
-	// instead of := which would assign it only in this function
-	/* db, err = gorm.Open("sqlite3", "./gorm.db")
+	db, err = gorm.Open("sqlite3", "./gorm.db")
 	//db, _ = gorm.Open("mysql", "root:root@tcp(localhost:3306)/peco")
 	if err != nil {
 		fmt.Println(err)
@@ -32,12 +32,6 @@ func main() {
 	db.AutoMigrate(&models.Role{})
 	db.AutoMigrate(&models.Experience{})
 	db.AutoMigrate(&models.Technology{})
-
-	r := gin.Default()
-
-	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-	*/
 
 	r := gin.New()
 	r.GET("/people", controller.GetPeople)
