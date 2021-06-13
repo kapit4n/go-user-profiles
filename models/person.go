@@ -15,5 +15,5 @@ type Person struct {
 	City        string       `json:"city"`
 	Roles       []Role       `gorm:"many2many:person_roles;"`
 	RoleId      uint         `json:"roleId"`
-	Experiences []Experience `gorm:"many2many:person_exp;PRELOAD:true;"`
+	Experiences []Experience `json:"experiences"`
 }
