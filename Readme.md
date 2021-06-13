@@ -71,6 +71,18 @@ go run example.go
   http://localhost:8080/roles/1
 
 
+### Add permissions
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"Create User"}' \
+  http://localhost:8080/permissions
+
+* curl --header "Content-Type: application/json" \
+  --request PUT \
+  --data '{"name":"Create User Permission"}' \
+  http://localhost:8080/permissions/1
+
+
 ### Experiences
 * curl --header "Content-Type: application/json" \
   --request POST \

@@ -29,6 +29,7 @@ func main() {
 	}
 	defer db.Close()
 	db.AutoMigrate(&models.Person{})
+	db.AutoMigrate(&models.Permission{})
 	db.AutoMigrate(&models.Role{})
 	db.AutoMigrate(&models.Experience{})
 	db.AutoMigrate(&models.Technology{})
@@ -51,6 +52,10 @@ func main() {
 	r.GET("/roles", controller.GetRole)
 	r.POST("/roles", controller.CreateRole)
 	r.PUT("/roles/:id", controller.UpdateRole)
+
+	r.GET("/permissions", controller.GetPermissions)
+	r.POST("/permissions", controller.CreatePermissions)
+	r.PUT("/permissions/:id", controller.UpdatePermissions)
 
 	r.GET("/experiences", controller.GetExperience)
 	r.GET("/experiences/:id", controller.GetExperienceById)
