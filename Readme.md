@@ -44,6 +44,10 @@ go run example.go
   --data '{"firstname":"Luis","lastname":"Arce", "city": "Cochabamba"}' \
   http://localhost:8080/people
 
+* curl --header "Content-Type: application/json" \
+  --request DELETE \
+  http://localhost:8080/people/2
+
 ### Add technologies
 * curl --header "Content-Type: application/json" \
   --request POST \
@@ -99,7 +103,6 @@ go run example.go
 * curl --header "Content-Type: application/json" \
   --request DELETE \
   http://localhost:8080/permissions/2
-
 
 
 ### Experiences
