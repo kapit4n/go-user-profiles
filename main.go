@@ -5,7 +5,6 @@ package main
 import (
 	"example/controller"
 	"example/models"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -22,17 +21,9 @@ var db *gorm.DB
 var err error
 
 func main() {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	//db, _ = gorm.Open("mysql", "root:root@tcp(localhost:3306)/peco")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer db.Close()
-	db.AutoMigrate(&models.Person{})
-	db.AutoMigrate(&models.Permission{})
-	db.AutoMigrate(&models.Role{})
-	db.AutoMigrate(&models.Experience{})
-	db.AutoMigrate(&models.Technology{})
+
+	models.ConnectionDB()
 
 	r := gin.New()
 	r.GET("/people", controller.GetPersons)
