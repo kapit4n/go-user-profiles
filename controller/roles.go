@@ -5,37 +5,32 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
 // create a Role
 func CreateRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var m models.Role
 	c.BindJSON(&m)
-	db.Create(&m)
+	models.DB.Create(&m)
 	c.JSON(200, m)
 }
 
 func UpdateRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	id := c.Params.ByName("id")
-	if err := db.Where("id = ?", id).First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 	c.BindJSON(&role)
-	db.Save(&role)
+	models.DB.Save(&role)
 	c.JSON(200, role)
 }
 
 func GetRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
-
 	var list []models.Role
 
-	if err := db.Find(&list).Preload("Permissions").Error; err != nil {
+	if err := models.DB.Find(&list).Preload("Permissions").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
@@ -44,13 +39,11 @@ func GetRole(c *gin.Context) {
 }
 
 func GetRoleById(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
-
 	var role models.Role
 
 	id := c.Params.ByName("id")
 
-	if err := db.Where("id = ?", id).Preload("Permissions").First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).Preload("Permissions").First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
@@ -60,17 +53,16 @@ func GetRoleById(c *gin.Context) {
 
 // Assign role to person
 func AssignPermission(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	id := c.Params.ByName("id")
 
 	// get role by id
-	if err := db.Where("id = ?", id).First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
-	db = db.Model(&role).Preload("Permissions")
+	db := models.DB.Model(&role).Preload("Permissions")
 	var permission models.Permission
 
 	c.BindJSON(&permission)
@@ -89,11 +81,10 @@ func AssignPermission(c *gin.Context) {
 }
 
 func DeleteRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	id := c.Params.ByName("id")
 
 	var toDelete models.Role
-	db.Where("id = ?", id).Delete(&toDelete)
+	models.DB.Where("id = ?", id).Delete(&toDelete)
 
 	c.JSON(200, gin.H{"id #" + id: "deleted"})
 }

@@ -12,94 +12,89 @@ var db *gorm.DB
 var err error
 
 func DeletePerson(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	id := c.Params.ByName("id")
 	var person models.Person
-	db.Where("id = ?", id).Delete(&person)
+	models.DB.Where("id = ?", id).Delete(&person)
 
 	c.JSON(200, gin.H{"id #" + id: "deleted"})
 }
 
 // update a person
 func UpdatePerson(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var person models.Person
 	id := c.Params.ByName("id")
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 	c.BindJSON(&person)
-	db.Save(&person)
+	models.DB.Save(&person)
 	c.JSON(200, person)
 }
 
 // Assign role to person
 func AssignRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
-	db = db.Model(&person).Preload("Roles")
+	models.DB.Model(&person).Preload("Roles")
 
 	c.BindJSON(&role)
 
 	//get role by id
 	roleId := role.ID
-	if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
 	person.Roles = append(person.Roles, role)
 
-	db.Save(&person)
+	models.DB.Save(&person)
 	c.JSON(200, person)
 }
 
 // Assign role to person
 func AssignExperience(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var experience models.Experience
 	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
-	db = db.Model(&person).Preload("Experiences")
+	models.DB.Model(&person).Preload("Experiences")
 
 	c.BindJSON(&experience)
 
 	//get experience by id
 	experienceId := experience.ID
-	if err := db.Where("id = ?", experienceId).First(&experience).Error; err != nil {
+	if err := models.DB.Where("id = ?", experienceId).First(&experience).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
 	person.Experiences = append(person.Experiences, experience)
 
-	db.Save(&person)
+	models.DB.Save(&person)
 	c.JSON(200, person)
 }
 
 // UnAssign role to person
 func UnAssignRole(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var role models.Role
 	var person models.Person
 	id := c.Params.ByName("id")
 	// get person by id
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+	if err := models.DB.Where("id = ?", id).First(&person).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
@@ -107,25 +102,24 @@ func UnAssignRole(c *gin.Context) {
 
 	//get role by id
 	roleId := role.ID
-	if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
 
-	db.Model(&person).Association("Roles").Delete(&role)
+	models.DB.Model(&person).Association("Roles").Delete(&role)
 
 	c.JSON(200, person)
 }
 
 // create a person
 func CreatePerson(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var person models.Person
 	c.BindJSON(&person)
 
 	var role models.Role
 	roleId := person.RoleId
-	if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := models.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	}
@@ -135,17 +129,15 @@ func CreatePerson(c *gin.Context) {
 
 	person.Roles = roles
 
-	db.Create(&person)
+	models.DB.Create(&person)
 	c.JSON(200, person)
 }
 
 func GetPersonById(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
-
 	var person models.Person
 	id := c.Params.ByName("id")
 
-	if err := db.First(&person, id).Preload("Roles").Preload("Experiences").Error; err != nil {
+	if err := models.DB.First(&person, id).Preload("Roles").Preload("Experiences").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
@@ -154,9 +146,8 @@ func GetPersonById(c *gin.Context) {
 }
 
 func GetPersons(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
 	var list []models.Person
-	if err := db.Find(&list).Preload("Roles").Preload("Experiences").Error; err != nil {
+	if err := models.DB.Find(&list).Preload("Roles").Preload("Experiences").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
