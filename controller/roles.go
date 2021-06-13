@@ -35,7 +35,7 @@ func GetRole(c *gin.Context) {
 
 	var list []models.Role
 
-	db = db.Find(&list)
+	db = db.Find(&list).Preload("Permissions")
 
 	if err := db.Find(&list).Error; err != nil {
 		c.AbortWithStatus(404)
@@ -43,4 +43,49 @@ func GetRole(c *gin.Context) {
 	} else {
 		c.JSON(200, list)
 	}
+}
+
+func GetRoleById(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+
+	var role models.Role
+
+	id := c.Params.ByName("id")
+
+	if err := db.Where("id = ?", id).Preload("Permissions").First(&role).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	c.JSON(200, role)
+}
+
+// Assign role to person
+func AssignPermission(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	var role models.Role
+	id := c.Params.ByName("id")
+
+	// get role by id
+	if err := db.Where("id = ?", id).First(&role).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	db = db.Model(&role).Preload("Permissions")
+	var permission models.Permission
+
+	c.BindJSON(&permission)
+
+	//get permission by id
+	techId := permission.ID
+	if err := db.Where("id = ?", techId).First(&permission).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+
+	role.Permissions = append(role.Permissions, permission)
+
+	db.Save(&role)
+	c.JSON(200, role)
 }

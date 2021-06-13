@@ -50,7 +50,9 @@ func main() {
 	r.POST("/technologies", controller.CreateTechnology)
 
 	r.GET("/roles", controller.GetRole)
+	r.GET("/roles/:id", controller.GetRoleById)
 	r.POST("/roles", controller.CreateRole)
+	r.POST("/roles/:id/assignPermission", controller.AssignPermission)
 	r.PUT("/roles/:id", controller.UpdateRole)
 
 	r.GET("/permissions", controller.GetPermissions)
@@ -67,6 +69,4 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	r.Run()
-
-	//r.Run(":8080")
 }

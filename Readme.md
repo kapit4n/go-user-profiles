@@ -70,6 +70,11 @@ go run example.go
   --data '{"name":"Super Admin"}' \
   http://localhost:8080/roles/1
 
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"id": 1}' \
+  http://localhost:8080/roles/1/assignPermission
+
 
 ### Add permissions
 * curl --header "Content-Type: application/json" \
