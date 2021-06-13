@@ -35,6 +35,7 @@ go run example.go
 * CRUD technologies
 * CRUD experiences
 * CRUD roles
+* CRUD permissions
 
 ## TOOLS
 ### Add people
@@ -86,6 +87,11 @@ go run example.go
   --request PUT \
   --data '{"name":"Create User Permission"}' \
   http://localhost:8080/permissions/1
+
+* curl --header "Content-Type: application/json" \
+  --request DELETE \
+  http://localhost:8080/permissions/2
+
 
 
 ### Experiences

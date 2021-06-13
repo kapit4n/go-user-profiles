@@ -60,6 +60,7 @@ func main() {
 	r.GET("/permissions/:id", controller.GetPermissionById)
 	r.POST("/permissions", controller.CreatePermissions)
 	r.PUT("/permissions/:id", controller.UpdatePermissions)
+	r.DELETE("/permissions/:id", controller.DeletePermission)
 
 	r.GET("/experiences", controller.GetExperience)
 	r.GET("/experiences/:id", controller.GetExperienceById)
