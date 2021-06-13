@@ -43,14 +43,16 @@ func main() {
 	r.GET("/people", controller.GetPeople)
 	r.GET("/people/:id", controller.GetPerson)
 	r.POST("/people", controller.CreatePerson)
-	r.POST("/technology", controller.CreateTechnology)
 	r.POST("/people/:id/experience", controller.CreateExperience)
-	r.POST("/experience/:id/atech", controller.AssignTech)
 	r.POST("/people/:id/arole", controller.AssignRole)
 	r.POST("/people/:id/aexperience", controller.AssignExperience)
 	r.POST("/people/:id/urole", controller.UnAssignRole)
 	r.PUT("/people/:id", controller.UpdatePerson)
 	r.DELETE("/people/:id", controller.DeletePerson)
+
+	r.GET("/technologies", controller.GetTechnology)
+	r.POST("/technologies", controller.CreateTechnology)
+	r.POST("/experience/:id/atech", controller.AssignTech)
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

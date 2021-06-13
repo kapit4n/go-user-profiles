@@ -187,7 +187,7 @@ func GetPeople(c *gin.Context) {
 	var people []models.Person
 	roles := []models.Role{}
 
-	//db = db.Model(&people).Preload("Roles")
+	db = db.Model(&people).Preload("Roles")
 	db = db.Find(&people)
 
 	if err := db.Find(&people).Error; err != nil {

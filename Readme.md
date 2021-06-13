@@ -37,10 +37,24 @@ go run example.go
 * CRUD roles
 
 ## TOOLS
+### Add people
 * curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"firstname":"Luis","lastname":"Arce", "city": "Cochabamba"}' \
   http://localhost:8080/people
+
+### Add technologies
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"Golang"}' \
+  http://localhost:8080/technologies
+
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"React js"}' \
+  http://localhost:8080/technologies
+
+
 
 ## before add swagger
 - go get -u github.com/swaggo/swag/cmd/swag
