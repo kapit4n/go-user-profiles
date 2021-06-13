@@ -71,6 +71,14 @@ go run example.go
   http://localhost:8080/roles/1
 
 
+### Experiences
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"title":"Remote Software developer", "personId": "1"}' \
+  http://localhost:8080/experiences
+
+
+
 
 ## before add swagger
 - go get -u github.com/swaggo/swag/cmd/swag

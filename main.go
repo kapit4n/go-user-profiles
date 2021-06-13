@@ -43,12 +43,13 @@ func main() {
 	r.GET("/people", controller.GetPeople)
 	r.GET("/people/:id", controller.GetPerson)
 	r.POST("/people", controller.CreatePerson)
+	r.PUT("/people/:id", controller.UpdatePerson)
+	r.DELETE("/people/:id", controller.DeletePerson)
+
 	r.POST("/people/:id/experience", controller.CreateExperience)
 	r.POST("/people/:id/arole", controller.AssignRole)
 	r.POST("/people/:id/aexperience", controller.AssignExperience)
 	r.POST("/people/:id/urole", controller.UnAssignRole)
-	r.PUT("/people/:id", controller.UpdatePerson)
-	r.DELETE("/people/:id", controller.DeletePerson)
 
 	r.GET("/technologies", controller.GetTechnology)
 	r.POST("/technologies", controller.CreateTechnology)
