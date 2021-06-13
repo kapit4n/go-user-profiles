@@ -3,7 +3,6 @@ package controller
 import (
 	models "example/models"
 	"fmt"
-	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -18,6 +17,19 @@ func CreateRole(c *gin.Context) {
 	c.JSON(200, m)
 }
 
+func UpdateRole(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	var role models.Role
+	id := c.Params.ByName("id")
+	if err := db.Where("id = ?", id).First(&role).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&role)
+	db.Save(&role)
+	c.JSON(200, role)
+}
+
 func GetRole(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 
@@ -29,10 +41,6 @@ func GetRole(c *gin.Context) {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
-
-		log.Println(list)
-
 		c.JSON(200, list)
 	}
-
 }

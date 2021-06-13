@@ -55,6 +55,7 @@ func main() {
 
 	r.GET("/roles", controller.GetRole)
 	r.POST("/roles", controller.CreateRole)
+	r.PUT("/roles/:id", controller.UpdateRole)
 
 	r.POST("/experience/:id/atech", controller.AssignTech)
 

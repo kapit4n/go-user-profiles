@@ -3,7 +3,6 @@ package controller
 import (
 	models "example/models"
 	"fmt"
-	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -12,14 +11,6 @@ import (
 var db *gorm.DB
 var err error
 
-//
-// @Summary Delete
-// @Description Delete Person by ID
-// @Accept  json
-// @Produce  json
-// @Param   id     path    int     true        "Some ID"
-// @Success 200 {string} string	"ok"
-// @Router /person/{id} [delete]
 func DeletePerson(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	id := c.Params.ByName("id")
@@ -41,23 +32,6 @@ func UpdatePerson(c *gin.Context) {
 	c.BindJSON(&person)
 	db.Save(&person)
 	c.JSON(200, person)
-}
-
-// Assign role to person
-func CreateExperience(c *gin.Context) {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
-	var experience models.Experience
-	var person models.Person
-	id := c.Params.ByName("id")
-	// get person by id
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
-	}
-	c.BindJSON(&experience)
-	experience.Person = person
-	db.Create(&experience)
-	c.JSON(200, experience)
 }
 
 // Assign role to person
@@ -149,8 +123,6 @@ func CreatePerson(c *gin.Context) {
 	var person models.Person
 	c.BindJSON(&person)
 
-	log.Println(person)
-
 	var role models.Role
 	roleId := person.RoleId
 	if err := db.Where("id = ?", roleId).First(&role).Error; err != nil {
@@ -183,22 +155,13 @@ func GetPerson(c *gin.Context) {
 
 func GetPeople(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
-
 	var people []models.Person
-	roles := []models.Role{}
-
 	db = db.Model(&people).Preload("Roles")
 	db = db.Find(&people)
-
 	if err := db.Find(&people).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
-
-		log.Println(people)
-
-		log.Println(roles)
-
 		c.JSON(200, people)
 	}
 }

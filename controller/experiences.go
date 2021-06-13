@@ -37,3 +37,20 @@ func AssignTech(c *gin.Context) {
 	db.Save(&experience)
 	c.JSON(200, experience)
 }
+
+// Assign role to person
+func CreateExperience(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	var experience models.Experience
+	var person models.Person
+	id := c.Params.ByName("id")
+	// get person by id
+	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&experience)
+	experience.Person = person
+	db.Create(&experience)
+	c.JSON(200, experience)
+}

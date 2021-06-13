@@ -65,6 +65,11 @@ go run example.go
   --data '{"name":"Developer"}' \
   http://localhost:8080/roles
 
+* curl --header "Content-Type: application/json" \
+  --request PUT \
+  --data '{"name":"Super Admin"}' \
+  http://localhost:8080/roles/1
+
 
 
 ## before add swagger
