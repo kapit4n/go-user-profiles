@@ -53,10 +53,10 @@ func main() {
 	r.PUT("/roles/:id", controller.UpdateRole)
 
 	r.GET("/experiences", controller.GetExperience)
+	r.GET("/experiences/:id", controller.GetExperienceById)
 	r.POST("/experiences", controller.CreateExperience)
 	r.PUT("/experiences/:id", controller.UpdateExperience)
-
-	r.POST("/experience/:id/atech", controller.AssignTech)
+	r.POST("/experiences/:id/atech", controller.AssignTech)
 
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

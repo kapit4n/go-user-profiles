@@ -77,6 +77,11 @@ go run example.go
   --data '{"title":"Remote Software developer", "personId": 1}' \
   http://localhost:8080/experiences
 
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"id": 2}' \
+  http://localhost:8080/experiences/1/atech
+
 
 
 

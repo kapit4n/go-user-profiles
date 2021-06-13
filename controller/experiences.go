@@ -88,3 +88,16 @@ func GetExperience(c *gin.Context) {
 		c.JSON(200, list)
 	}
 }
+
+func GetExperienceById(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+
+	var experience models.Experience
+	id := c.Params.ByName("id")
+
+	if err := db.Where("id = ?", id).Preload("Technologies").First(&experience).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.JSON(200, experience)
+}
