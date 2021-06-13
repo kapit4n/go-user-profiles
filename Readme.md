@@ -54,6 +54,17 @@ go run example.go
   --data '{"name":"React js"}' \
   http://localhost:8080/technologies
 
+### Add roles
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"Admin"}' \
+  http://localhost:8080/roles
+
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name":"Developer"}' \
+  http://localhost:8080/roles
+
 
 
 ## before add swagger
