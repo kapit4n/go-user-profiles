@@ -41,3 +41,13 @@ func GetTechnologyById(c *gin.Context) {
 		c.JSON(200, technology)
 	}
 }
+
+func DeleteTechnology(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	id := c.Params.ByName("id")
+
+	var toDelete models.Technology
+	db.Where("id = ?", id).Delete(&toDelete)
+
+	c.JSON(200, gin.H{"id #" + id: "deleted"})
+}

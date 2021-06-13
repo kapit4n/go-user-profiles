@@ -49,6 +49,7 @@ func main() {
 	r.GET("/technologies", controller.GetTechnology)
 	r.GET("/technologies/:id", controller.GetTechnologyById)
 	r.POST("/technologies", controller.CreateTechnology)
+	r.DELETE("/technologies/:id", controller.DeleteTechnology)
 
 	r.GET("/roles", controller.GetRole)
 	r.GET("/roles/:id", controller.GetRoleById)

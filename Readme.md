@@ -55,6 +55,11 @@ go run example.go
   --data '{"name":"React js"}' \
   http://localhost:8080/technologies
 
+  * curl --header "Content-Type: application/json" \
+  --request DELETE \
+  http://localhost:8080/technologies/2
+
+
 ### Add roles
 * curl --header "Content-Type: application/json" \
   --request POST \
