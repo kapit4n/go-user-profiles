@@ -56,6 +56,7 @@ func main() {
 	r.POST("/roles", controller.CreateRole)
 	r.POST("/roles/:id/assignPermission", controller.AssignPermission)
 	r.PUT("/roles/:id", controller.UpdateRole)
+	r.DELETE("/roles/:id", controller.DeleteRole)
 
 	r.GET("/permissions", controller.GetPermissions)
 	r.GET("/permissions/:id", controller.GetPermissionById)

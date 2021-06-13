@@ -81,6 +81,9 @@ go run example.go
   --data '{"id": 1}' \
   http://localhost:8080/roles/1/assignPermission
 
+  * curl --header "Content-Type: application/json" \
+  --request DELETE \
+  http://localhost:8080/roles/3
 
 ### Add permissions
 * curl --header "Content-Type: application/json" \

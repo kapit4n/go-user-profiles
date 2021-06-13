@@ -87,3 +87,13 @@ func AssignPermission(c *gin.Context) {
 	db.Save(&role)
 	c.JSON(200, role)
 }
+
+func DeleteRole(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+	id := c.Params.ByName("id")
+
+	var toDelete models.Role
+	db.Where("id = ?", id).Delete(&toDelete)
+
+	c.JSON(200, gin.H{"id #" + id: "deleted"})
+}
