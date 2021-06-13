@@ -81,7 +81,7 @@ go run example.go
   --data '{"id": 1}' \
   http://localhost:8080/roles/1/assignPermission
 
-  * curl --header "Content-Type: application/json" \
+* curl --header "Content-Type: application/json" \
   --request DELETE \
   http://localhost:8080/roles/3
 
@@ -113,8 +113,9 @@ go run example.go
   --data '{"id": 2}' \
   http://localhost:8080/experiences/1/atech
 
-
-
+* curl --header "Content-Type: application/json" \
+  --request DELETE \
+  http://localhost:8080/experiences/6
 
 ## before add swagger
 - go get -u github.com/swaggo/swag/cmd/swag
