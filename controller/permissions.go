@@ -35,12 +35,24 @@ func GetPermissions(c *gin.Context) {
 
 	var list []models.Permission
 
-	db = db.Find(&list)
-
 	if err := db.Find(&list).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
 		c.JSON(200, list)
+	}
+}
+
+func GetPermissionById(c *gin.Context) {
+	db, err = gorm.Open("sqlite3", "./gorm.db")
+
+	var permission models.Permission
+	id := c.Params.ByName("id")
+
+	if err := db.First(&permission, id).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.JSON(200, permission)
 	}
 }

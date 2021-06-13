@@ -15,8 +15,8 @@ func DeletePerson(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	id := c.Params.ByName("id")
 	var person models.Person
-	d := db.Where("id = ?", id).Delete(&person)
-	fmt.Println(d)
+	db.Where("id = ?", id).Delete(&person)
+
 	c.JSON(200, gin.H{"id #" + id: "deleted"})
 }
 
@@ -139,13 +139,13 @@ func CreatePerson(c *gin.Context) {
 	c.JSON(200, person)
 }
 
-func GetPerson(c *gin.Context) {
+func GetPersonById(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 
+	var person models.Person
 	id := c.Params.ByName("id")
-	person := new(models.Person)
-	db = db.Model(person).Preload("Roles").Preload("Experiences")
-	if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+
+	if err := db.First(&person, id).Preload("Roles").Preload("Experiences").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
@@ -153,14 +153,13 @@ func GetPerson(c *gin.Context) {
 	}
 }
 
-func GetPeople(c *gin.Context) {
+func GetPersons(c *gin.Context) {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
-	var people []models.Person
-	db = db.Find(&people).Preload("Roles").Preload("Experiences")
-	if err := db.Find(&people).Error; err != nil {
+	var list []models.Person
+	if err := db.Find(&list).Preload("Roles").Preload("Experiences").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
-		c.JSON(200, people)
+		c.JSON(200, list)
 	}
 }

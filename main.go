@@ -35,8 +35,8 @@ func main() {
 	db.AutoMigrate(&models.Technology{})
 
 	r := gin.New()
-	r.GET("/people", controller.GetPeople)
-	r.GET("/people/:id", controller.GetPerson)
+	r.GET("/people", controller.GetPersons)
+	r.GET("/people/:id", controller.GetPersonById)
 	r.POST("/people", controller.CreatePerson)
 	r.PUT("/people/:id", controller.UpdatePerson)
 	r.DELETE("/people/:id", controller.DeletePerson)
@@ -47,6 +47,7 @@ func main() {
 	r.POST("/people/:id/urole", controller.UnAssignRole)
 
 	r.GET("/technologies", controller.GetTechnology)
+	r.GET("/technologies/:id", controller.GetTechnologyById)
 	r.POST("/technologies", controller.CreateTechnology)
 
 	r.GET("/roles", controller.GetRole)
@@ -56,6 +57,7 @@ func main() {
 	r.PUT("/roles/:id", controller.UpdateRole)
 
 	r.GET("/permissions", controller.GetPermissions)
+	r.GET("/permissions/:id", controller.GetPermissionById)
 	r.POST("/permissions", controller.CreatePermissions)
 	r.PUT("/permissions/:id", controller.UpdatePermissions)
 

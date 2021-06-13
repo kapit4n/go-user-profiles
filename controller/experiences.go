@@ -79,9 +79,7 @@ func GetExperience(c *gin.Context) {
 
 	var list []models.Experience
 
-	db = db.Find(&list).Preload("Person")
-
-	if err := db.Find(&list).Error; err != nil {
+	if err := db.Find(&list).Preload("Person").Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
