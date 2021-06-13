@@ -48,7 +48,7 @@ func CreateExperience(c *gin.Context) {
 
 	// get person by id
 	id := c.Params.ByName("id")
-	if len(id) == 0 {
+	if experience.PersonID > 0 {
 		id = strconv.FormatUint(uint64(experience.PersonID), 10)
 	}
 
