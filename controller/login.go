@@ -28,6 +28,16 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, token)
 }
 
+func ValidateToken(c *gin.Context) {
+	token := c.Params.ByName("token")
+	validated, err := service.NewJWTService().ValidateToken(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, "Not valid token")
+		return
+	}
+	c.JSON(http.StatusOK, validated.Valid)
+}
+
 func Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, "Successfully logged out")
 }

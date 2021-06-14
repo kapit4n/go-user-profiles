@@ -131,6 +131,17 @@ go run example.go
   --data '{"username":"admin", "password": "admin"}' \
   http://localhost:8080/login
 
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"username":"admin", "password": "badpassword"}' \
+  http://localhost:8080/login
+
+* curl --header "Content-Type: application/json" \
+  --request GET \
+  http://localhost:8080/validateToken/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjIzODkzNDg5LCJpYXQiOjE2MjM2MzQyODksImlzcyI6InByYWdtYXRpY3Jldmlld3MuY29tIn0.Zu5YAt02RiRHXEs0pO_z-gvRn9OnlBZ3TED90uqyh58
+
+
+
 ## before add swagger
 - go get -u github.com/swaggo/swag/cmd/swag
 - export PATH=$(go env GOPATH)/bin:$PATH
