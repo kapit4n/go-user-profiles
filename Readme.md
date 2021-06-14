@@ -120,6 +120,17 @@ go run example.go
   --request DELETE \
   http://localhost:8080/experiences/6
 
+### Experiences
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"username":"admin", "password": "admin"}' \
+  http://localhost:8080/users
+
+* curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"username":"admin", "password": "admin"}' \
+  http://localhost:8080/login
+
 ## before add swagger
 - go get -u github.com/swaggo/swag/cmd/swag
 - export PATH=$(go env GOPATH)/bin:$PATH

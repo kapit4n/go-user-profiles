@@ -16,6 +16,7 @@ func ConnectionDB() {
 
 	// defer db.Close()
 
+	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Person{})
 	db.AutoMigrate(&Permission{})
 	db.AutoMigrate(&Role{})
