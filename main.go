@@ -4,6 +4,7 @@ package main
 // both are included here for reference
 import (
 	"example/controller"
+	"example/middleware"
 	"example/models"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,9 @@ func main() {
 	models.ConnectionDB()
 
 	r := gin.New()
+
+	r.Use(middleware.AuthMiddleware)
+
 	r.GET("/people", controller.GetPersons)
 	r.GET("/people/:id", controller.GetPersonById)
 	r.POST("/people", controller.CreatePerson)
